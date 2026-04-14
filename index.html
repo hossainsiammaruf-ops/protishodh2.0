@@ -141,14 +141,23 @@
   }
   .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff4040; animation: blink 1.5s ease infinite; flex-shrink: 0; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ── FIXED HERO TITLE: fully visible, no clip ── */
   .hero-title {
-    font-size: clamp(2.4rem, 7vw, 5rem);
-    font-weight: 700; line-height: 1.0; letter-spacing: -0.02em;
+    font-size: clamp(2rem, 6vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
     background: linear-gradient(135deg, #fff 30%, var(--gold) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 6px;
+    padding-bottom: 4px; /* ensures descenders are not clipped */
     animation: fadeup 0.8s ease both;
+    overflow: visible;
   }
+
   .hero-subtitle {
     font-size: clamp(0.85rem, 2.5vw, 1.1rem); font-weight: 500;
     color: var(--gold); letter-spacing: 0.04em;
@@ -159,7 +168,7 @@
     font-size: clamp(0.88rem, 2vw, 1rem); line-height: 1.85;
     color: var(--text-muted);
     animation: fadeup 0.8s 0.3s ease both;
-    margin-bottom: 30px;
+    margin-bottom: 22px;
   }
   .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeup 0.8s 0.45s ease both; }
   @keyframes fadeup { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
@@ -408,9 +417,8 @@
     width: 100%; padding: clamp(10px, 2.5vw, 12px) 13px;
     background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
     border-radius: 10px; color: var(--text);
-    font-size: clamp(0.88rem, 2.5vw, 0.9rem); font-family: 'Hind Siliguri', sans-serif;
+    font-family: 'Hind Siliguri', sans-serif;
     transition: all 0.2s; outline: none; -webkit-appearance: none;
-    /* prevent zoom on iOS */
     font-size: max(16px, clamp(0.88rem, 2.5vw, 0.9rem));
   }
   .form-input:focus { border-color:rgba(120,0,0,0.5); background:rgba(120,0,0,0.05); box-shadow:0 0 0 3px rgba(120,0,0,0.1); }
@@ -437,6 +445,425 @@
   /* ── SCROLL REVEAL ── */
   .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══════════════════════════════════
+     COURSE POSTER BANNER (replaces teacher panel banner)
+  ═══════════════════════════════════ */
+  .course-poster-banner {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(120,0,0,0.35);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 26px;
+    box-shadow: 0 0 40px var(--primary-glow), 0 8px 32px rgba(0,0,0,0.5);
+    background: linear-gradient(120deg,
+      #0d0000 0%,
+      #1a0000 20%,
+      #2a0000 40%,
+      #1a0000 60%,
+      #0d0000 100%
+    );
+    aspect-ratio: 16/5;
+    display: flex;
+    align-items: stretch;
+  }
+
+  /* Top accent line */
+  .course-poster-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(120,0,0,0.6) 15%,
+      rgba(201,168,76,0.7) 35%,
+      rgba(255,255,255,0.5) 50%,
+      rgba(201,168,76,0.7) 65%,
+      rgba(120,0,0,0.6) 85%,
+      transparent 100%
+    );
+    z-index: 5;
+  }
+
+  /* Bottom accent line */
+  .course-poster-banner::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(120,0,0,0.5), transparent);
+    z-index: 5;
+  }
+
+  /* Background grid texture */
+  .poster-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 1;
+  }
+
+  /* Red radial glow on left */
+  .poster-glow-left {
+    position: absolute;
+    top: 50%; left: 18%;
+    transform: translate(-50%, -50%);
+    width: 55%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(120,0,0,0.35) 0%, transparent 65%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Gold radial glow, subtle, on right */
+  .poster-glow-right {
+    position: absolute;
+    top: 50%; right: -5%;
+    transform: translateY(-50%);
+    width: 40%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 65%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Diagonal slash decoration */
+  .poster-slash {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(120,0,0,0.4) 30%, rgba(120,0,0,0.4) 70%, transparent);
+    z-index: 3;
+    transform: rotate(12deg) scaleY(1.5);
+    pointer-events: none;
+  }
+
+  /* Left content area */
+  .poster-left {
+    flex: 1.15;
+    padding: clamp(14px, 3vw, 28px) clamp(16px, 3.5vw, 32px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 4;
+  }
+
+  .poster-eyebrow {
+    font-size: clamp(0.55rem, 1.3vw, 0.65rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--primary-light);
+    margin-bottom: clamp(4px, 1vw, 8px);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .poster-eyebrow-line {
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--primary-light);
+    flex-shrink: 0;
+  }
+
+  .poster-main-title {
+    font-size: clamp(1.1rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(130deg, #ffffff 0%, #f0ece8 40%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: clamp(2px, 0.5vw, 6px);
+    padding-bottom: 2px;
+  }
+
+  .poster-version-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(120,0,0,0.25);
+    border: 1px solid rgba(120,0,0,0.45);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: clamp(0.55rem, 1.2vw, 0.68rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #ff9090;
+    text-transform: uppercase;
+    margin-bottom: clamp(6px, 1.5vw, 12px);
+    width: fit-content;
+  }
+
+  .poster-tagline {
+    font-size: clamp(0.65rem, 1.5vw, 0.82rem);
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 300px;
+    margin-bottom: clamp(8px, 1.8vw, 14px);
+  }
+
+  .poster-stat-row {
+    display: flex;
+    gap: clamp(10px, 2.5vw, 22px);
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .poster-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .poster-stat-num {
+    font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .poster-stat-lbl {
+    font-size: clamp(0.48rem, 1.1vw, 0.58rem);
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .poster-stat-divider {
+    width: 1px;
+    height: clamp(22px, 4vw, 34px);
+    background: rgba(120,0,0,0.3);
+    align-self: center;
+  }
+
+  /* Right content area */
+  .poster-right {
+    flex: 0.85;
+    position: relative;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Vertical separator */
+  .poster-separator {
+    position: absolute;
+    left: 0;
+    top: 12%;
+    bottom: 12%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(120,0,0,0.4), transparent);
+  }
+
+  .poster-right-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 1.5vw, 12px);
+    padding: clamp(10px, 2vw, 20px);
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Subject pill grid */
+  .poster-subject-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(4px, 0.8vw, 7px);
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .poster-subj-pill {
+    background: rgba(120,0,0,0.18);
+    border: 1px solid rgba(120,0,0,0.3);
+    border-radius: 6px;
+    padding: clamp(3px, 0.7vw, 6px) clamp(4px, 0.8vw, 8px);
+    font-size: clamp(0.5rem, 1.1vw, 0.65rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #ff9090;
+    text-align: center;
+    text-transform: uppercase;
+    transition: all 0.25s;
+  }
+
+  .poster-subj-pill:hover {
+    background: rgba(120,0,0,0.35);
+    border-color: rgba(120,0,0,0.5);
+    color: #ffb0b0;
+  }
+
+  .poster-right-label {
+    font-size: clamp(0.52rem, 1.1vw, 0.62rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: clamp(2px, 0.5vw, 5px);
+  }
+
+  /* Responsive: hide right side on small screens */
+  @media (max-width: 580px) {
+    .course-poster-banner {
+      aspect-ratio: auto;
+      min-height: 140px;
+    }
+    .poster-right { display: none; }
+    .poster-left { padding: 18px 18px 20px; }
+    .poster-tagline { display: none; }
+  }
+
+  /* ═══════════════════════════════════
+     TEACHER PANEL
+  ═══════════════════════════════════ */
+  .teachers-section {
+    padding: clamp(50px, 8vw, 80px) 5%;
+    background: var(--dark2);
+  }
+  .teachers-container { max-width: 1200px; margin: 0 auto; }
+  .teachers-head { margin-bottom: clamp(28px, 5vw, 44px); }
+  .teachers-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: clamp(28px, 5vw, 44px);
+  }
+  @media (max-width: 960px) {
+    .teachers-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  }
+  @media (max-width: 520px) {
+    .teachers-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+  .teacher-card {
+    background: var(--dark3);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.32s;
+    position: relative;
+  }
+  .teacher-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(120,0,0,0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .teacher-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(120,0,0,0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .teacher-card:hover {
+    border-color: rgba(120,0,0,0.42);
+    transform: translateY(-5px);
+    box-shadow: 0 16px 44px rgba(0,0,0,0.38), 0 0 30px rgba(120,0,0,0.1);
+  }
+  .teacher-card:hover::before { opacity: 1; }
+  .teacher-card:hover::after { opacity: 1; }
+  .teacher-img-wrap {
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: linear-gradient(160deg, rgba(50,0,0,0.6) 0%, rgba(18,18,18,0.95) 100%);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .teacher-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.48s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .teacher-card:hover .teacher-img-wrap img { transform: scale(1.07); }
+  .teacher-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(160deg, rgba(55,0,0,0.5) 0%, rgba(15,15,15,0.92) 100%);
+    transition: background 0.3s;
+  }
+  .teacher-card:hover .teacher-img-placeholder {
+    background: linear-gradient(160deg, rgba(80,0,0,0.5) 0%, rgba(20,5,5,0.92) 100%);
+  }
+  .teacher-img-placeholder-icon {
+    width: clamp(42px, 8vw, 54px);
+    height: clamp(42px, 8vw, 54px);
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), #3a0000);
+    border: 1px solid rgba(120,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(120,0,0,0.3);
+    transition: box-shadow 0.3s;
+  }
+  .teacher-card:hover .teacher-img-placeholder-icon {
+    box-shadow: 0 6px 28px rgba(120,0,0,0.5);
+  }
+  .teacher-img-label {
+    font-size: clamp(0.58rem, 1.4vw, 0.65rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .teacher-info {
+    padding: clamp(10px, 2vw, 14px) clamp(10px, 2vw, 14px) clamp(12px, 2vw, 16px);
+    position: relative;
+    z-index: 2;
+  }
+  .teacher-name {
+    font-size: clamp(0.78rem, 1.8vw, 0.88rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .teacher-desig {
+    font-size: clamp(0.64rem, 1.5vw, 0.71rem);
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .teacher-subj-tag {
+    display: inline-block;
+    font-size: clamp(0.56rem, 1.3vw, 0.63rem);
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    padding: 2px 9px;
+    border-radius: 100px;
+    background: rgba(120,0,0,0.2);
+    border: 1px solid rgba(120,0,0,0.32);
+    color: #ff9090;
+    text-transform: uppercase;
+  }
 
   /* ════════════════════════════════════
      MOBILE BREAKPOINTS
@@ -469,11 +896,11 @@
     .subjects-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
-  /* Touch devices: remove hover transforms that feel laggy */
   @media (hover: none) {
     .feature-card:hover { transform: none; }
     .btn-primary:hover { transform: none; }
     .nav-cta:hover { transform: none; }
+    .teacher-card:hover { transform: none; }
   }
 </style>
 </head>
@@ -523,7 +950,58 @@
       <div class="hero-badge"><span class="hero-badge-dot"></span>Second Timer Special Course</div>
       <h1 class="hero-title">প্রতিশোধ ২.০</h1>
       <p class="hero-subtitle">Second Timer Special Course</p>
-      <p class="hero-desc">প্রতিশোধ ২.০ আমাদের পূর্ববর্তী সফল কোর্স "প্রতিশোধ ১.০"-এর একটি উন্নত ও পরিমার্জিত সংস্করণ। এই কোর্সটি বিশেষভাবে প্রস্তুত করা হয়েছে সেকেন্ড টাইমার শিক্ষার্থীদের জন্য, যেখানে আমরা প্রতিটি শিক্ষার্থীর একাডেমিক অগ্রগতি নিশ্চিত করতে সর্বোচ্চ গুরুত্ব প্রদান করি। সুসংগঠিত গাইডলাইন, নিয়মিত মূল্যায়ন এবং নিরবচ্ছিন্ন মেন্টরিং-এর মাধ্যমে আমরা তোমাদের সফলতার পথকে আরও দৃঢ় করতে প্রতিশ্রুতিবদ্ধ।</p>
+      <p class="hero-desc">প্রতিশোধ ২.০ আমাদের পূর্ববর্তী সফল কোর্স "প্রতিশোধ ১.০"-এর একটি উন্নত ও পরিমার্জিত সংস্করণ। এই কোর্সটি বিশেষভাবে প্রস্তুত করা হয়েছে সেকেন্ড টাইমার শিক্ষার্থীদের জন্য, যেখানে আমরা প্রতিটি শিক্ষার্থীর একাডেমিক অগ্রগতি নিশ্চিত করতে সর্বোচ্চ গুরুত্ব প্রদান করি।</p>
+
+      <!-- COURSE POSTER BANNER -->
+      <div class="course-poster-banner reveal">
+        <div class="poster-grid-bg"></div>
+        <div class="poster-glow-left"></div>
+        <div class="poster-glow-right"></div>
+        <div class="poster-slash"></div>
+
+        <div class="poster-left">
+          <div class="poster-eyebrow">
+            <span class="poster-eyebrow-line"></span>
+            Expert Faculty · Teacher Panel
+          </div>
+          <div class="poster-main-title">Our Expert<br>Teacher Panel</div>
+          <div class="poster-version-tag">প্রতিশোধ ২.০</div>
+          <p class="poster-tagline">বাংলাদেশের সেরা শিক্ষকদের সরাসরি গাইডেন্সে তোমার স্বপ্নের বিশ্ববিদ্যালয়ে ভর্তির পথ তৈরি করো।</p>
+          <div class="poster-stat-row">
+            <div class="poster-stat">
+              <span class="poster-stat-num">10+</span>
+              <span class="poster-stat-lbl">Expert Teachers</span>
+            </div>
+            <div class="poster-stat-divider"></div>
+            <div class="poster-stat">
+              <span class="poster-stat-num">6</span>
+              <span class="poster-stat-lbl">Subjects</span>
+            </div>
+            <div class="poster-stat-divider"></div>
+            <div class="poster-stat">
+              <span class="poster-stat-num">24/7</span>
+              <span class="poster-stat-lbl">Support</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="poster-right">
+          <div class="poster-separator"></div>
+          <div class="poster-right-content">
+            <div class="poster-subject-grid">
+              <div class="poster-subj-pill">Physics</div>
+              <div class="poster-subj-pill">Chemistry</div>
+              <div class="poster-subj-pill">Math</div>
+              <div class="poster-subj-pill">Biology</div>
+              <div class="poster-subj-pill">English</div>
+              <div class="poster-subj-pill">বাংলা</div>
+            </div>
+            <div class="poster-right-label">Subjects Covered</div>
+          </div>
+        </div>
+      </div>
+      <!-- END COURSE POSTER BANNER -->
+
       <div class="hero-actions">
         <button class="btn-primary" onclick="openModal()">Pre-Book Now</button>
         <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">কোর্সের বিবরণ দেখো</button>
@@ -558,6 +1036,160 @@
         <div class="fb-label">Mentoring</div>
         <div class="fb-val">২৪/৭ Support</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL SECTION -->
+<section class="teachers-section">
+  <div class="teachers-container">
+    <div class="teachers-head reveal">
+      <div class="section-label">Faculty</div>
+      <h2 class="section-title">আমাদের শিক্ষক প্যানেল</h2>
+      <p class="section-desc">বাংলাদেশের শীর্ষস্থানীয় বিশেষজ্ঞ শিক্ষকরা তোমাকে সফলতার পথে নিয়ে যাবে।</p>
+    </div>
+    <div class="teachers-grid">
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T1</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">Physics</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T2</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">Chemistry</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T3</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">Math</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T4</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">Biology</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T5</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">English</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T6</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">বাংলা</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T7</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Physics</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T8</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Chemistry</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T9</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Math</span>
+        </div>
+      </div>
+
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <div class="teacher-img-placeholder">
+            <div class="teacher-img-placeholder-icon">T10</div>
+            <span class="teacher-img-label">Photo</span>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Biology</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -816,10 +1448,8 @@ window.addEventListener('load', () => {
   setTimeout(() => { document.getElementById('loader').classList.add('done'); }, 1800);
 });
 
-// ── COUNTDOWN — hardcoded: 16 April 2026, 10:00 PM Bangladesh time (UTC+6) ──
-// To change: update the date string below → 'YYYY-MM-DDTHH:MM:00+06:00'
+// ── COUNTDOWN ──
 const TARGET_DATE = new Date('2026-04-16T22:00:00+06:00');
-
 function pad(n) { return String(n).padStart(2, '0'); }
 function updateCountdown() {
   const diff = TARGET_DATE - Date.now();
