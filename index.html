@@ -84,15 +84,27 @@
     height: 60px;
   }
   .nav-logo { display: flex; align-items: center; gap: 9px; }
-  .nav-logo-icon {
+
+  /* ── LOGO IMAGE SLOT ── */
+  .nav-logo-img-wrap {
     width: 36px; height: 36px; flex-shrink: 0;
-    background: linear-gradient(135deg, var(--primary), #3a0000);
     border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; font-weight: 700; color: #fff;
+    overflow: hidden;
     border: 1px solid rgba(120,0,0,0.5);
     box-shadow: 0 0 16px var(--primary-glow);
+    background: linear-gradient(135deg, var(--primary), #3a0000);
+    display: flex; align-items: center; justify-content: center;
   }
+  .nav-logo-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+  .nav-logo-img-wrap img.loaded { display: block; }
+  .nav-logo-img-wrap .nav-logo-fallback {
+    font-size: 1rem; font-weight: 700; color: #fff;
+  }
+
   .nav-logo-text { font-size: clamp(0.85rem, 2.5vw, 1rem); font-weight: 700; color: var(--text); }
   .nav-links { display: flex; gap: 24px; list-style: none; }
   .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
@@ -169,7 +181,7 @@
     animation: fadeup 0.8s 0.3s ease both;
     margin-bottom: 22px;
   }
-  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeup 0.8s 0.45s ease both; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeup 0.8s 0.45s ease both; margin-bottom: 22px; }
   @keyframes fadeup { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
   .btn-primary {
@@ -196,6 +208,117 @@
   }
   .btn-secondary:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.15); }
 
+  /* ── HERO MINI COUNTDOWN ── */
+  .hero-countdown-bar {
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 2vw, 14px);
+    background: rgba(120,0,0,0.12);
+    border: 1px solid rgba(120,0,0,0.25);
+    border-radius: 12px;
+    padding: clamp(10px,2.5vw,14px) clamp(14px,3vw,20px);
+    margin-bottom: 18px;
+    animation: fadeup 0.8s 0.55s ease both;
+    flex-wrap: wrap;
+  }
+  .hcb-label {
+    font-size: clamp(0.68rem, 2vw, 0.75rem);
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .hcb-divider { width: 1px; height: 24px; background: rgba(120,0,0,0.3); flex-shrink: 0; }
+  .hcb-units { display: flex; gap: clamp(6px,1.5vw,10px); align-items: center; }
+  .hcb-unit {
+    display: flex; flex-direction: column; align-items: center;
+    background: rgba(120,0,0,0.18);
+    border: 1px solid rgba(120,0,0,0.2);
+    border-radius: 8px;
+    padding: 5px 10px;
+    min-width: 48px;
+  }
+  .hcb-num {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff, var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-variant-numeric: tabular-nums;
+  }
+  .hcb-unitlbl {
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .hcb-colon {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-weight: 700;
+    color: rgba(120,0,0,0.5);
+    line-height: 1;
+    align-self: center;
+    margin-bottom: 8px;
+  }
+  .hcb-date {
+    font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+    color: var(--text-muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+
+  /* ── PRE-BOOKING COUNTER BUTTON ── */
+  .prebook-counter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 10px;
+    padding: clamp(10px,2.5vw,13px) clamp(16px,4vw,22px);
+    cursor: pointer;
+    transition: all 0.3s;
+    animation: fadeup 0.8s 0.6s ease both;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .prebook-counter-btn:hover {
+    background: rgba(201,168,76,0.16);
+    border-color: rgba(201,168,76,0.5);
+    transform: translateY(-1px);
+  }
+  .pcb-fire { font-size: 1.1rem; flex-shrink: 0; }
+  .pcb-text-wrap { display: flex; flex-direction: column; gap: 1px; }
+  .pcb-count-row { display: flex; align-items: baseline; gap: 5px; }
+  .pcb-num {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .pcb-unit-lbl {
+    font-size: clamp(0.7rem, 2vw, 0.78rem);
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .pcb-sublabel {
+    font-size: clamp(0.62rem, 1.8vw, 0.68rem);
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  .pcb-pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    animation: pulse-dot 2s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(201,168,76,0.5);
+  }
+  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+
   /* ── HERO VISUAL ── */
   .hero-visual {
     position: relative; height: 400px;
@@ -219,37 +342,18 @@
     position: relative; z-index: 2;
   }
   .dash-header { font-size: 0.72rem; font-weight: 600; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
-
-  /* ── NEW STAT GRID ── */
   .dash-stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 16px;
   }
   .dash-stat-box {
-    background: rgba(120,0,0,0.1);
-    border: 1px solid rgba(120,0,0,0.2);
-    border-radius: 11px;
-    padding: 11px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    background: rgba(120,0,0,0.1); border: 1px solid rgba(120,0,0,0.2);
+    border-radius: 11px; padding: 11px 12px;
+    display: flex; flex-direction: column; gap: 2px;
   }
-  .dsb-num {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1;
-  }
-  .dsb-lbl {
-    font-size: 0.66rem;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-    line-height: 1.3;
-  }
+  .dsb-num { font-size: 1.35rem; font-weight: 700; color: var(--text); line-height: 1; }
+  .dsb-lbl { font-size: 0.66rem; color: var(--text-muted); letter-spacing: 0.04em; line-height: 1.3; }
   .dsb-accent { color: var(--gold); }
-
   .dash-subjects { display: flex; gap: 5px; flex-wrap: wrap; }
   .subj-tag { font-size: 0.68rem; padding: 3px 9px; background: rgba(120,0,0,0.2); border: 1px solid rgba(120,0,0,0.3); border-radius: 100px; color: #ff9090; }
 
@@ -284,45 +388,59 @@
   /* ── DIVIDER ── */
   .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(120,0,0,0.4), transparent); margin: 0 5%; }
 
-  /* ── COUNTDOWN ── */
-  .countdown-section {
-    background: linear-gradient(135deg, rgba(120,0,0,0.12), rgba(20,20,20,0.8));
-    border-top: 1px solid rgba(120,0,0,0.2);
-    border-bottom: 1px solid rgba(120,0,0,0.2);
-    padding: clamp(40px, 8vw, 60px) 5%;
-    text-align: center; position: relative; overflow: hidden;
+  /* ── POSTER IMAGE BANNER ── */
+  .poster-image-banner {
+    width: 100%; border-radius: 16px;
+    border: 1px solid rgba(120,0,0,0.35);
+    overflow: hidden; position: relative;
+    margin-bottom: 0;
+    box-shadow: 0 0 40px var(--primary-glow), 0 8px 32px rgba(0,0,0,0.5);
+    background: #0d0000;
   }
-  .countdown-section::before {
-    content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%);
-    width:500px; height:180px;
-    background:radial-gradient(ellipse, rgba(120,0,0,0.25), transparent);
-    pointer-events:none;
+  .poster-image-banner::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(120,0,0,0.6) 15%, rgba(201,168,76,0.7) 35%, rgba(255,255,255,0.5) 50%, rgba(201,168,76,0.7) 65%, rgba(120,0,0,0.6) 85%, transparent 100%);
+    z-index: 5;
   }
-  .countdown-label { font-size: clamp(0.75rem, 2vw, 0.85rem); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; }
-  .countdown-date-display {
-    font-size: clamp(0.82rem, 2.5vw, 0.95rem); color: var(--gold);
-    font-weight: 600; margin-bottom: 24px; letter-spacing: 0.05em;
+  .poster-image-banner::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(120,0,0,0.5), transparent); z-index: 5;
   }
-  .countdown-grid { display: flex; justify-content: center; gap: clamp(8px, 2.5vw, 20px); flex-wrap: wrap; }
-  .countdown-item {
-    display: flex; flex-direction: column; align-items: center;
-    background: rgba(20,20,20,0.7); border: 1px solid rgba(120,0,0,0.25);
-    border-radius: 12px; padding: clamp(14px, 3vw, 20px) clamp(16px, 4vw, 28px);
-    min-width: clamp(70px, 18vw, 100px);
-    backdrop-filter: blur(10px); position: relative; overflow: hidden;
+  .poster-image-banner img {
+    width: 100%; height: auto; display: block;
+    object-fit: cover; max-height: 420px; object-position: center top;
   }
-  .countdown-item::before {
-    content:''; position:absolute; top:0; left:0; right:0; height:1px;
-    background:linear-gradient(90deg, transparent, rgba(120,0,0,0.6), transparent);
+  .poster-image-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px; min-height: 140px; padding: 28px 20px;
+    background: linear-gradient(120deg, #0d0000, #1a0000, #0d0000); text-align: center;
   }
-  .countdown-num {
-    font-size: clamp(2rem, 7vw, 3rem); font-weight: 700; line-height: 1;
-    background: linear-gradient(135deg, #fff, var(--gold));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    font-variant-numeric: tabular-nums;
+  .poster-image-placeholder p { font-size: clamp(0.75rem, 2vw, 0.85rem); color: var(--text-dim); line-height: 1.6; }
+  .poster-image-placeholder strong { color: var(--primary-light); font-weight: 600; }
+
+  /* ── COURSE OVERVIEW BAR ── */
+  .course-overview-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; background: rgba(12,0,0,0.9);
+    border: 1px solid rgba(120,0,0,0.3); border-top: none;
+    border-radius: 0 0 16px 16px; overflow: hidden; margin-bottom: 26px;
   }
-  .countdown-unit { font-size: clamp(0.6rem, 1.8vw, 0.7rem); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-top: 5px; }
-  .countdown-colon { font-size: clamp(1.6rem, 5vw, 2.5rem); font-weight: 700; color: rgba(120,0,0,0.6); align-self: center; line-height: 1; }
+  .cob-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: clamp(12px, 2.5vw, 18px) clamp(10px, 2vw, 16px); gap: 3px;
+    border-right: 1px solid rgba(120,0,0,0.2); position: relative; transition: background 0.25s;
+  }
+  .cob-item:last-child { border-right: none; }
+  .cob-item:hover { background: rgba(120,0,0,0.1); }
+  .cob-num { font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 700; color: var(--gold); line-height: 1; letter-spacing: -0.01em; }
+  .cob-lbl { font-size: clamp(0.58rem, 1.3vw, 0.68rem); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); text-align: center; line-height: 1.3; }
+
+  @media (max-width: 480px) {
+    .course-overview-bar { grid-template-columns: repeat(2, 1fr); }
+    .cob-item:nth-child(2) { border-right: none; }
+    .cob-item:nth-child(3) { border-right: 1px solid rgba(120,0,0,0.2); border-top: 1px solid rgba(120,0,0,0.2); }
+    .cob-item:nth-child(4) { border-right: none; border-top: 1px solid rgba(120,0,0,0.2); }
+  }
 
   /* ── FEATURES ── */
   .features-section { padding: clamp(50px, 8vw, 80px) 5%; }
@@ -384,6 +502,38 @@
   .testi-batch { font-size:clamp(0.7rem,1.8vw,0.75rem); color:var(--text-dim); }
   .testi-stars { color:var(--gold); font-size:0.8rem; letter-spacing:2px; margin-bottom:8px; }
 
+  /* ── TEACHERS ── */
+  .teachers-section { padding: clamp(50px, 8vw, 80px) 5%; background: var(--dark2); }
+  .teachers-container { max-width: 1200px; margin: 0 auto; }
+  .teachers-head { margin-bottom: clamp(28px, 5vw, 44px); }
+  .teachers-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+    margin-top: clamp(28px, 5vw, 44px);
+  }
+  @media (max-width: 960px) { .teachers-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+  @media (max-width: 520px) { .teachers-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+  .teacher-card {
+    background: var(--dark3); border: 1px solid var(--glass-border);
+    border-radius: 14px; overflow: hidden; transition: all 0.32s; position: relative;
+  }
+  .teacher-card::before { content:''; position:absolute; inset:0; border-radius:14px; background:linear-gradient(135deg,rgba(120,0,0,0.08),transparent); opacity:0; transition:opacity 0.3s; pointer-events:none; z-index:1; }
+  .teacher-card::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(120,0,0,0.5),transparent); opacity:0; transition:opacity 0.3s; }
+  .teacher-card:hover { border-color:rgba(120,0,0,0.42); transform:translateY(-5px); box-shadow:0 16px 44px rgba(0,0,0,0.38),0 0 30px rgba(120,0,0,0.1); }
+  .teacher-card:hover::before { opacity:1; }
+  .teacher-card:hover::after { opacity:1; }
+  .teacher-img-wrap { width:100%; aspect-ratio:4/5; overflow:hidden; background:linear-gradient(160deg,rgba(50,0,0,0.6) 0%,rgba(18,18,18,0.95) 100%); position:relative; flex-shrink:0; }
+  .teacher-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.48s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .teacher-card:hover .teacher-img-wrap img { transform:scale(1.07); }
+  .teacher-img-placeholder { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:linear-gradient(160deg,rgba(55,0,0,0.5) 0%,rgba(15,15,15,0.92) 100%); transition:background 0.3s; }
+  .teacher-card:hover .teacher-img-placeholder { background:linear-gradient(160deg,rgba(80,0,0,0.5) 0%,rgba(20,5,5,0.92) 100%); }
+  .teacher-img-placeholder-icon { width:clamp(42px,8vw,54px); height:clamp(42px,8vw,54px); border-radius:50%; background:linear-gradient(135deg,var(--primary),#3a0000); border:1px solid rgba(120,0,0,0.5); display:flex; align-items:center; justify-content:center; font-size:clamp(0.9rem,2vw,1.1rem); font-weight:700; color:#fff; box-shadow:0 4px 18px rgba(120,0,0,0.3); transition:box-shadow 0.3s; }
+  .teacher-card:hover .teacher-img-placeholder-icon { box-shadow:0 6px 28px rgba(120,0,0,0.5); }
+  .teacher-img-label { font-size:clamp(0.58rem,1.4vw,0.65rem); font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
+  .teacher-info { padding:clamp(10px,2vw,14px) clamp(10px,2vw,14px) clamp(12px,2vw,16px); position:relative; z-index:2; }
+  .teacher-name { font-size:clamp(0.78rem,1.8vw,0.88rem); font-weight:700; color:var(--text); margin-bottom:3px; line-height:1.3; }
+  .teacher-desig { font-size:clamp(0.64rem,1.5vw,0.71rem); color:var(--text-muted); line-height:1.5; margin-bottom:8px; }
+  .teacher-subj-tag { display:inline-block; font-size:clamp(0.56rem,1.3vw,0.63rem); font-weight:600; letter-spacing:0.07em; padding:2px 9px; border-radius:100px; background:rgba(120,0,0,0.2); border:1px solid rgba(120,0,0,0.32); color:#ff9090; text-transform:uppercase; }
+
   /* ── FAQ ── */
   .faq-section { padding: clamp(50px, 8vw, 80px) 5%; }
   .faq-container { max-width: 740px; margin: 0 auto; }
@@ -401,8 +551,7 @@
     border-top: 1px solid var(--glass-border);
     padding: clamp(28px, 5vw, 40px) 5%;
     display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 14px;
-    background: var(--dark2);
+    flex-wrap: wrap; gap: 14px; background: var(--dark2);
   }
   .footer-brand { font-size: clamp(0.82rem, 2vw, 0.9rem); font-weight: 700; color: var(--text); }
   .footer-copy { font-size: clamp(0.72rem, 1.8vw, 0.8rem); color: var(--text-dim); }
@@ -422,15 +571,13 @@
   .modal {
     background: #141414; border: 1px solid rgba(120,0,0,0.3);
     border-radius: 20px; padding: clamp(24px, 5vw, 40px);
-    width: 100%; max-width: 520px;
-    max-height: 92vh; overflow-y: auto;
-    position: relative;
-    transform: translateY(20px); transition: transform 0.3s;
+    width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto;
+    position: relative; transform: translateY(20px); transition: transform 0.3s;
     box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 60px rgba(120,0,0,0.1);
     -webkit-overflow-scrolling: touch;
   }
   .modal-overlay.open .modal { transform: translateY(0); }
-  .modal::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(120,0,0,0.7), transparent); }
+  .modal::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(120,0,0,0.7),transparent); }
   .modal-close { position:absolute; top:14px; right:14px; background:var(--glass); border:1px solid var(--glass-border); border-radius:8px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); transition:all 0.2s; -webkit-tap-highlight-color:transparent; }
   .modal-close:hover { background:rgba(255,255,255,0.08); color:var(--text); }
   .modal-title { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 700; color: var(--text); margin-bottom: 5px; }
@@ -458,8 +605,8 @@
     border-radius: 18px; padding: clamp(24px, 5vw, 36px);
     text-align: center; position: relative; overflow: hidden; display: none;
   }
-  .ticket::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
-  .ticket::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(120,0,0,0.2), transparent 60%); pointer-events:none; }
+  .ticket::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+  .ticket::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(120,0,0,0.2),transparent 60%); pointer-events:none; }
   .ticket-icon { font-size: 2.2rem; margin-bottom: 10px; }
   .ticket-title { font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; color: var(--gold); margin-bottom: 7px; }
   .ticket-name { font-size: clamp(0.95rem, 3vw, 1.1rem); font-weight: 600; color: var(--text); margin-bottom: 6px; }
@@ -471,280 +618,7 @@
   .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* ═══════════════════════════════════
-     POSTER IMAGE BANNER
-     Replace src="YOUR_POSTER_IMAGE_URL"
-     with your actual imgur or image link.
-  ═══════════════════════════════════ */
-  .poster-image-banner {
-    width: 100%;
-    border-radius: 16px;
-    border: 1px solid rgba(120,0,0,0.35);
-    overflow: hidden;
-    position: relative;
-    margin-bottom: 0;
-    box-shadow: 0 0 40px var(--primary-glow), 0 8px 32px rgba(0,0,0,0.5);
-    background: #0d0000;
-    /* aspect-ratio auto so image defines height */
-  }
-
-  .poster-image-banner::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(120,0,0,0.6) 15%,
-      rgba(201,168,76,0.7) 35%,
-      rgba(255,255,255,0.5) 50%,
-      rgba(201,168,76,0.7) 65%,
-      rgba(120,0,0,0.6) 85%,
-      transparent 100%
-    );
-    z-index: 5;
-  }
-  .poster-image-banner::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(120,0,0,0.5), transparent);
-    z-index: 5;
-  }
-
-  .poster-image-banner img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    /* If your image is very tall, cap it: */
-    max-height: 420px;
-    object-position: center top;
-  }
-
-  /* Placeholder shown when no image is set */
-  .poster-image-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    min-height: 140px;
-    padding: 28px 20px;
-    background: linear-gradient(120deg, #0d0000, #1a0000, #0d0000);
-    text-align: center;
-  }
-  .poster-image-placeholder p {
-    font-size: clamp(0.75rem, 2vw, 0.85rem);
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-  .poster-image-placeholder strong {
-    color: var(--primary-light);
-    font-weight: 600;
-  }
-
-  /* ── COURSE OVERVIEW BAR (below poster) ── */
-  .course-overview-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    background: rgba(12,0,0,0.9);
-    border: 1px solid rgba(120,0,0,0.3);
-    border-top: none;
-    border-radius: 0 0 16px 16px;
-    overflow: hidden;
-    margin-bottom: 26px;
-  }
-
-  .cob-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(12px, 2.5vw, 18px) clamp(10px, 2vw, 16px);
-    gap: 3px;
-    border-right: 1px solid rgba(120,0,0,0.2);
-    position: relative;
-    transition: background 0.25s;
-  }
-  .cob-item:last-child { border-right: none; }
-  .cob-item:hover { background: rgba(120,0,0,0.1); }
-
-  .cob-num {
-    font-size: clamp(1.1rem, 3vw, 1.5rem);
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-    letter-spacing: -0.01em;
-  }
-  .cob-lbl {
-    font-size: clamp(0.58rem, 1.3vw, 0.68rem);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    text-align: center;
-    line-height: 1.3;
-  }
-
-  @media (max-width: 480px) {
-    .course-overview-bar {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .cob-item:nth-child(2) { border-right: none; }
-    .cob-item:nth-child(3) {
-      border-right: 1px solid rgba(120,0,0,0.2);
-      border-top: 1px solid rgba(120,0,0,0.2);
-    }
-    .cob-item:nth-child(4) {
-      border-right: none;
-      border-top: 1px solid rgba(120,0,0,0.2);
-    }
-  }
-
-  /* ═══════════════════════════════════
-     TEACHER PANEL
-  ═══════════════════════════════════ */
-  .teachers-section {
-    padding: clamp(50px, 8vw, 80px) 5%;
-    background: var(--dark2);
-  }
-  .teachers-container { max-width: 1200px; margin: 0 auto; }
-  .teachers-head { margin-bottom: clamp(28px, 5vw, 44px); }
-  .teachers-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-    margin-top: clamp(28px, 5vw, 44px);
-  }
-  @media (max-width: 960px) {
-    .teachers-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  }
-  @media (max-width: 520px) {
-    .teachers-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  }
-  .teacher-card {
-    background: var(--dark3);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: all 0.32s;
-    position: relative;
-  }
-  .teacher-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 14px;
-    background: linear-gradient(135deg, rgba(120,0,0,0.08), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .teacher-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(120,0,0,0.5), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .teacher-card:hover {
-    border-color: rgba(120,0,0,0.42);
-    transform: translateY(-5px);
-    box-shadow: 0 16px 44px rgba(0,0,0,0.38), 0 0 30px rgba(120,0,0,0.1);
-  }
-  .teacher-card:hover::before { opacity: 1; }
-  .teacher-card:hover::after { opacity: 1; }
-  .teacher-img-wrap {
-    width: 100%;
-    aspect-ratio: 4/5;
-    overflow: hidden;
-    background: linear-gradient(160deg, rgba(50,0,0,0.6) 0%, rgba(18,18,18,0.95) 100%);
-    position: relative;
-    flex-shrink: 0;
-  }
-  .teacher-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.48s cubic-bezier(0.25,0.46,0.45,0.94);
-  }
-  .teacher-card:hover .teacher-img-wrap img { transform: scale(1.07); }
-  .teacher-img-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: linear-gradient(160deg, rgba(55,0,0,0.5) 0%, rgba(15,15,15,0.92) 100%);
-    transition: background 0.3s;
-  }
-  .teacher-card:hover .teacher-img-placeholder {
-    background: linear-gradient(160deg, rgba(80,0,0,0.5) 0%, rgba(20,5,5,0.92) 100%);
-  }
-  .teacher-img-placeholder-icon {
-    width: clamp(42px, 8vw, 54px);
-    height: clamp(42px, 8vw, 54px);
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), #3a0000);
-    border: 1px solid rgba(120,0,0,0.5);
-    display: flex; align-items: center; justify-content: center;
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-    font-weight: 700;
-    color: #fff;
-    box-shadow: 0 4px 18px rgba(120,0,0,0.3);
-    transition: box-shadow 0.3s;
-  }
-  .teacher-card:hover .teacher-img-placeholder-icon {
-    box-shadow: 0 6px 28px rgba(120,0,0,0.5);
-  }
-  .teacher-img-label {
-    font-size: clamp(0.58rem, 1.4vw, 0.65rem);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-  .teacher-info {
-    padding: clamp(10px, 2vw, 14px) clamp(10px, 2vw, 14px) clamp(12px, 2vw, 16px);
-    position: relative;
-    z-index: 2;
-  }
-  .teacher-name {
-    font-size: clamp(0.78rem, 1.8vw, 0.88rem);
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 3px;
-    line-height: 1.3;
-  }
-  .teacher-desig {
-    font-size: clamp(0.64rem, 1.5vw, 0.71rem);
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 8px;
-  }
-  .teacher-subj-tag {
-    display: inline-block;
-    font-size: clamp(0.56rem, 1.3vw, 0.63rem);
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    padding: 2px 9px;
-    border-radius: 100px;
-    background: rgba(120,0,0,0.2);
-    border: 1px solid rgba(120,0,0,0.32);
-    color: #ff9090;
-    text-transform: uppercase;
-  }
-
-  /* ════════════════════════════════════
-     MOBILE BREAKPOINTS
-  ════════════════════════════════════ */
+  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     .hero-content { grid-template-columns: 1fr; gap: 36px; }
     .hero-visual { height: 300px; }
@@ -756,23 +630,22 @@
     .footer-links { justify-content: center; }
     .testi-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
+    .hcb-date { display: none; }
   }
-
   @media (max-width: 480px) {
     .hero-visual { height: 240px; }
     .dashboard-card { width: min(270px, 82vw); padding: 16px; }
     .blob-1 { width: 200px; height: 200px; }
     .blob-2 { width: 130px; height: 130px; }
     .float-badge { display: none; }
-    .countdown-grid { gap: 6px; }
-    .countdown-colon { font-size: 1.4rem; }
     .hero-actions { flex-direction: column; }
     .hero-actions .btn-primary,
     .hero-actions .btn-secondary { width: 100%; text-align: center; }
     .extras-grid { grid-template-columns: 1fr; }
     .subjects-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero-countdown-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .hcb-divider { display: none; }
   }
-
   @media (hover: none) {
     .feature-card:hover { transform: none; }
     .btn-primary:hover { transform: none; }
@@ -783,7 +656,11 @@
 </head>
 <body>
 
-<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">প্রতিশোধ ২.০</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
 <!-- ANNOUNCEMENT BAR -->
 <div class="announce-bar">
   <div class="announce-track">
@@ -801,7 +678,20 @@
 <!-- NAVBAR -->
 <nav>
   <div class="nav-logo">
-    <div class="nav-logo-icon">প্র</div>
+    <!-- ══ LOGO IMAGE SLOT ══
+         Paste your logo image URL below in src="..."
+         e.g. src="https://i.imgur.com/XXXXXXX.png"
+         If left empty or broken, "প্র" fallback shows. -->
+    <div class="nav-logo-img-wrap" id="logoWrap">
+      <img
+        id="logoImg"
+        src=""
+        alt="Logo"
+        onload="this.classList.add('loaded'); document.getElementById('logoFallback').style.display='none';"
+        onerror="this.style.display='none';"
+      >
+      <span class="nav-logo-fallback" id="logoFallback">প্র</span>
+    </div>
     <span class="nav-logo-text">প্রতিশোধ ২.০</span>
   </div>
   <ul class="nav-links">
@@ -824,18 +714,7 @@
       <p class="hero-subtitle">Second Timer Special Course</p>
       <p class="hero-desc">প্রতিশোধ ২.০ আমাদের পূর্ববর্তী সফল কোর্স "প্রতিশোধ ১.০"-এর একটি উন্নত ও পরিমার্জিত সংস্করণ। এই কোর্সটি বিশেষভাবে প্রস্তুত করা হয়েছে সেকেন্ড টাইমার শিক্ষার্থীদের জন্য, যেখানে আমরা প্রতিটি শিক্ষার্থীর একাডেমিক অগ্রগতি নিশ্চিত করতে সর্বোচ্চ গুরুত্ব প্রদান করি।</p>
 
-      <!--
-        ════════════════════════════════════════
-        POSTER IMAGE BANNER
-        ────────────────────────────────────────
-        To set your poster image:
-          1. Change the src attribute below
-             from "YOUR_POSTER_IMAGE_URL"
-             to your actual imgur or any image link
-             e.g. src="https://i.imgur.com/XXXXXXX.jpg"
-          2. Save the file — the image will fill the banner.
-        ════════════════════════════════════════
-      -->
+      <!-- POSTER IMAGE BANNER -->
       <div class="poster-image-banner reveal" id="posterBanner">
         <img
           id="posterImg"
@@ -845,39 +724,54 @@
           onload="document.getElementById('posterPlaceholder').style.display='none'; this.style.display='block';"
         >
         <div class="poster-image-placeholder" id="posterPlaceholder">
-          <p>
-            <strong>পোস্টার ইমেজ এখানে দেখাবে</strong><br>
-            HTML-এর <code style="color:var(--gold);font-size:0.78rem;">#posterImg</code> এর <code style="color:var(--gold);font-size:0.78rem;">src="..."</code> এ<br>
-            তোমার imgur বা image লিংক বসাও
-          </p>
+          <p><strong>পোস্টার ইমেজ এখানে দেখাবে</strong><br>
+          <code style="color:var(--gold);font-size:0.78rem;">#posterImg</code> এর <code style="color:var(--gold);font-size:0.78rem;">src="..."</code> এ তোমার image লিংক বসাও</p>
         </div>
       </div>
 
-      <!-- COURSE OVERVIEW BAR (below poster) -->
+      <!-- COURSE OVERVIEW BAR -->
       <div class="course-overview-bar reveal">
-        <div class="cob-item">
-          <span class="cob-num">150+</span>
-          <span class="cob-lbl">Live Classes</span>
-        </div>
-        <div class="cob-item">
-          <span class="cob-num">∞</span>
-          <span class="cob-lbl">Archive Exams</span>
-        </div>
-        <div class="cob-item">
-          <span class="cob-num">10+</span>
-          <span class="cob-lbl">Expert Teachers</span>
-        </div>
-        <div class="cob-item">
-          <span class="cob-num">24/7</span>
-          <span class="cob-lbl">Mentorship</span>
-        </div>
+        <div class="cob-item"><span class="cob-num">150+</span><span class="cob-lbl">Live Classes</span></div>
+        <div class="cob-item"><span class="cob-num">∞</span><span class="cob-lbl">Archive Exams</span></div>
+        <div class="cob-item"><span class="cob-num">10+</span><span class="cob-lbl">Expert Teachers</span></div>
+        <div class="cob-item"><span class="cob-num">24/7</span><span class="cob-lbl">Mentorship</span></div>
       </div>
-      <!-- END POSTER + OVERVIEW -->
 
+      <!-- BUTTONS -->
       <div class="hero-actions">
         <button class="btn-primary" onclick="openModal()">Pre-Book Now</button>
         <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">কোর্সের বিবরণ দেখো</button>
       </div>
+
+      <!-- ── COUNTDOWN (inline, below buttons) ── -->
+      <div class="hero-countdown-bar reveal">
+        <span class="hcb-label">🗓️ Admission Opens In</span>
+        <div class="hcb-divider"></div>
+        <div class="hcb-units">
+          <div class="hcb-unit"><span class="hcb-num" id="hcd-days">00</span><span class="hcb-unitlbl">Days</span></div>
+          <span class="hcb-colon">:</span>
+          <div class="hcb-unit"><span class="hcb-num" id="hcd-hours">00</span><span class="hcb-unitlbl">Hrs</span></div>
+          <span class="hcb-colon">:</span>
+          <div class="hcb-unit"><span class="hcb-num" id="hcd-mins">00</span><span class="hcb-unitlbl">Min</span></div>
+          <span class="hcb-colon">:</span>
+          <div class="hcb-unit"><span class="hcb-num" id="hcd-secs">00</span><span class="hcb-unitlbl">Sec</span></div>
+        </div>
+        <span class="hcb-date">১৬ এপ্রিল ২০২৬ · রাত ১০টা</span>
+      </div>
+
+      <!-- ── PRE-BOOKING COUNTER BUTTON ── -->
+      <button class="prebook-counter-btn reveal" onclick="openModal()">
+        <div class="pcb-pulse"></div>
+        <div class="pcb-text-wrap">
+          <div class="pcb-count-row">
+            <span class="pcb-num" id="prebookCount">247</span>
+            <span class="pcb-unit-lbl">জন</span>
+          </div>
+          <span class="pcb-sublabel">ইতোমধ্যে Pre-Book করেছে — আজই জায়গা নিশ্চিত করো</span>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;opacity:0.6"><path d="M3 8h10M9 4l4 4-4 4" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
     </div>
 
     <!-- HERO VISUAL (right side) -->
@@ -887,24 +781,12 @@
       <div class="dashboard-card">
         <div class="dash-header">Course Overview</div>
         <div class="dash-stats-grid">
-          <div class="dash-stat-box">
-            <span class="dsb-num dsb-accent">150+</span>
-            <span class="dsb-lbl">Live Classes</span>
-          </div>
-          <div class="dash-stat-box">
-            <span class="dsb-num dsb-accent">∞</span>
-            <span class="dsb-lbl">Archive Exams</span>
-          </div>
-          <div class="dash-stat-box">
-            <span class="dsb-num dsb-accent">10+</span>
-            <span class="dsb-lbl">Expert Teachers</span>
-          </div>
-          <div class="dash-stat-box">
-            <span class="dsb-num dsb-accent">24/7</span>
-            <span class="dsb-lbl">Mentorship</span>
-          </div>
+          <div class="dash-stat-box"><span class="dsb-num dsb-accent">150+</span><span class="dsb-lbl">Live Classes</span></div>
+          <div class="dash-stat-box"><span class="dsb-num dsb-accent">∞</span><span class="dsb-lbl">Archive Exams</span></div>
+          <div class="dash-stat-box"><span class="dsb-num dsb-accent">10+</span><span class="dsb-lbl">Expert Teachers</span></div>
+          <div class="dash-stat-box"><span class="dsb-num dsb-accent">24/7</span><span class="dsb-lbl">Mentorship</span></div>
         </div>
-        <div class="dash-stat-label" style="margin-bottom:8px; font-size:0.75rem; color:var(--text-muted);">Subjects Covered</div>
+        <div style="margin-bottom:8px; font-size:0.75rem; color:var(--text-muted);">Subjects Covered</div>
         <div class="dash-subjects">
           <span class="subj-tag">Physics</span>
           <span class="subj-tag">Chemistry</span>
@@ -927,39 +809,29 @@
 </section>
 
 <!-- TEACHER PANEL SECTION -->
-<section class="teachers-section">
+<section class="teachers-section" id="teachers">
   <div class="teachers-container">
     <div class="teachers-head reveal">
       <div class="section-label">Faculty</div>
       <h2 class="section-title">আমাদের শিক্ষক প্যানেল</h2>
-      <p class="section-desc">বাংলাদেশের শীর্ষস্থানীয় বিশ্ববিদ্যালয় পড়ুয়া Mentor-রা তোমাকে সফলতার পথে নিয়ে যাবে।</p>
+      <p class="section-desc">বাংলাদেশের শীর্ষস্থানীয় বিশ্ববিদ্যালয় পড়ুয়া Mentor-রা তোমাকে সফলতার পথে নিয়ে যাবে।</p>
     </div>
     <div class="teachers-grid">
-
-      <!-- Teacher 1 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/QnE0Isb.jpeg" alt="Teacher 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">NR</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">NR</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Dr Naimul Islam Rahat</div>
           <div class="teacher-desig">MBBS, DMC</div>
-          <span class="teacher-subj-tag">Biology · Chemistry · Math · English </span>
+          <span class="teacher-subj-tag">Biology · Chemistry · Math · English</span>
         </div>
       </div>
-
-      <!-- Teacher 2 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/RT46fk8.jpeg" alt="Teacher 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">TT</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">TT</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Tasdid Islam Turab</div>
@@ -967,47 +839,32 @@
           <span class="teacher-subj-tag">Physics · Chemistry · Biology</span>
         </div>
       </div>
-
-      <!-- Teacher 3 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/240qeWD.jpeg" alt="Teacher 3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T3</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">JZ</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Jobayer Al Zadid</div>
-          <div class="teacher-desig">MBBS,DMC</div>
+          <div class="teacher-desig">MBBS, DMC</div>
           <span class="teacher-subj-tag">Biology</span>
         </div>
       </div>
-
-      <!-- Teacher 4 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/BleqZLI.jpeg" alt="Teacher 4" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T4</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">SA</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Safin Ahamed</div>
           <div class="teacher-desig">DMC</div>
-          <span class="teacher-subj-tag">Biology · Chemistry · English </span>
+          <span class="teacher-subj-tag">Biology · Chemistry · English</span>
         </div>
       </div>
-
-      <!-- Teacher 5 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/m59xaqz.jpeg" alt="Teacher 5" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T5</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">SS</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Saleh Muhammaad Shahanshah</div>
@@ -1015,15 +872,10 @@
           <span class="teacher-subj-tag">Biology · Chemistry</span>
         </div>
       </div>
-
-      <!-- Teacher 6 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/n9VlObc.jpeg" alt="Teacher 6" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T6</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">JA</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Jahid Ahmed</div>
@@ -1031,15 +883,10 @@
           <span class="teacher-subj-tag">Biology · Chemistry</span>
         </div>
       </div>
-
-      <!-- Teacher 7 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/lFjYlCD.jpeg" alt="Teacher 7" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T7</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">NM</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Nahin Munkar</div>
@@ -1047,15 +894,10 @@
           <span class="teacher-subj-tag">Physics</span>
         </div>
       </div>
-
-      <!-- Teacher 8 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/7VgEEq4.jpeg" alt="Teacher 8" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T8</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">TN</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Tahmid Nattashi</div>
@@ -1063,15 +905,10 @@
           <span class="teacher-subj-tag">Chemistry</span>
         </div>
       </div>
-
-      <!-- Teacher 9 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/6aoqlZm.jpeg" alt="Teacher 9" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T9</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">FA</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Farhan Anik</div>
@@ -1079,15 +916,10 @@
           <span class="teacher-subj-tag">Math</span>
         </div>
       </div>
-
-      <!-- Teacher 10 -->
       <div class="teacher-card reveal">
         <div class="teacher-img-wrap">
           <img src="https://i.imgur.com/7U3mj07.jpeg" alt="Teacher 10" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
-          <div class="teacher-img-placeholder" style="display:none;">
-            <div class="teacher-img-placeholder-icon">T10</div>
-            <div class="teacher-img-label">Photo</div>
-          </div>
+          <div class="teacher-img-placeholder" style="display:none;"><div class="teacher-img-placeholder-icon">ML</div><div class="teacher-img-label">Photo</div></div>
         </div>
         <div class="teacher-info">
           <div class="teacher-name">Muhammad Layen Islam</div>
@@ -1095,27 +927,9 @@
           <span class="teacher-subj-tag">Math</span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
-
-<div class="divider"></div>
-
-<!-- COUNTDOWN -->
-<div class="countdown-section" id="countdown-section">
-  <div class="countdown-label">Admission Starts In</div>
-  <div class="countdown-date-display">🗓️ ১৬ এপ্রিল ২০২৬ · রাত ১০টা</div>
-  <div class="countdown-grid">
-    <div class="countdown-item"><span class="countdown-num" id="cd-days">00</span><span class="countdown-unit">Days</span></div>
-    <span class="countdown-colon">:</span>
-    <div class="countdown-item"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-unit">Hours</span></div>
-    <span class="countdown-colon">:</span>
-    <div class="countdown-item"><span class="countdown-num" id="cd-mins">00</span><span class="countdown-unit">Minutes</span></div>
-    <span class="countdown-colon">:</span>
-    <div class="countdown-item"><span class="countdown-num" id="cd-secs">00</span><span class="countdown-unit">Seconds</span></div>
-  </div>
-</div>
 
 <div class="divider"></div>
 
@@ -1131,12 +945,12 @@
       <div class="feature-card reveal">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6060" stroke-width="1.8"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
         <div class="feature-title">স্পেশাল গাইডলাইন</div>
-        <div class="feature-desc"> তোমাদের জন্য থাকবে স্পেশাল  গাইডলাইন সেশন সেখানে তোমরা সরাসরি আমাদের টিচার প্যানেল এর কাছে নিজেদের সমস্যা জানাতে পারবে , যা তোমাকে সঠিক দিকনির্দেশনা দেবে।</div>
+        <div class="feature-desc">তোমাদের জন্য থাকবে স্পেশাল গাইডলাইন সেশন সেখানে তোমরা সরাসরি আমাদের টিচার প্যানেল এর কাছে নিজেদের সমস্যা জানাতে পারবে, যা তোমাকে সঠিক দিকনির্দেশনা দেবে।</div>
       </div>
       <div class="feature-card reveal">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6060" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
         <div class="feature-title">ডেইলি এক্সাম</div>
-        <div class="feature-desc">অধ্যায় ভিত্তিক, ভার্সিটি ভিত্তিক ডেইলি পরীক্ষার মাধ্যমে নিজের প্রস্তুতি যাচাই করো এবং দুর্বল জায়গা চিহ্নিত করতে পারবে ।</div>
+        <div class="feature-desc">অধ্যায় ভিত্তিক, ভার্সিটি ভিত্তিক ডেইলি পরীক্ষার মাধ্যমে নিজের প্রস্তুতি যাচাই করো এবং দুর্বল জায়গা চিহ্নিত করতে পারবে।</div>
       </div>
       <div class="feature-card reveal">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6060" stroke-width="1.8"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
@@ -1150,7 +964,7 @@
       </div>
       <div class="feature-card reveal">
         <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6060" stroke-width="1.8"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div>
-        <div class="feature-title">ফুল্ সিলেবাস কয়েকবার রিভিশন </div>
+        <div class="feature-title">ফুল্ সিলেবাস কয়েকবার রিভিশন</div>
         <div class="feature-desc">Full Syllabus কভার করে সম্পূর্ণ সাবজেক্ট ফাইনাল ক্লাস – প্রতিটি বিষয়ের জন্য।</div>
       </div>
     </div>
@@ -1214,26 +1028,26 @@
     <div class="testi-grid">
       <div class="testi-card reveal">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">প্রতিশোধ ১ এ ভাইয়া দের সব সময় পেয়েছি, ভাইয়া রা খুব রেস্পন্সিভ ছিল, প্রায় সমস্যার সমাধান পারসোনালী করে দিতেন </p>
+        <p class="testi-quote">প্রতিশোধ ১ এ ভাইয়া দের সব সময় পেয়েছি, ভাইয়া রা খুব রেস্পন্সিভ ছিল, প্রায় সমস্যার সমাধান পারসোনালী করে দিতেন</p>
         <div class="testi-author">
-          <div class="testi-avatar">RL</div>
-          <div><div class="testi-name">জোবায়ের </div><div class="testi-batch">HSC 2025 · সিলেট কৃষি বিশ্ববিদ্যালয়  </div></div>
+          <div class="testi-avatar">JZ</div>
+          <div><div class="testi-name">জোবায়ের</div><div class="testi-batch">HSC 2025 · সিলেট কৃষি বিশ্ববিদ্যালয়</div></div>
         </div>
       </div>
       <div class="testi-card reveal">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">দ্বিতীয়বার দেওয়ার সময় মনে হয়েছিল আমি পারব না কিন্তু ভাইয়া রা ভরসা দিয়েছেন তাদের কথা রেখেছেন আমাদের পাশে সব সময় ছিলেন ।</p>
+        <p class="testi-quote">দ্বিতীয়বার দেওয়ার সময় মনে হয়েছিল আমি পারব না কিন্তু ভাইয়া রা ভরসা দিয়েছেন তাদের কথা রেখেছেন আমাদের পাশে সব সময় ছিলেন।</p>
         <div class="testi-author">
-          <div class="testi-avatar">MA</div>
-          <div><div class="testi-name">আরিফ হোসেন</div><div class="testi-batch">HSC 2024 · জাহাঙ্গীরনগর বিশ্ববিদ্যালয় </div></div>
+          <div class="testi-avatar">AH</div>
+          <div><div class="testi-name">আরিফ হোসেন</div><div class="testi-batch">HSC 2024 · জাহাঙ্গীরনগর বিশ্ববিদ্যালয়</div></div>
         </div>
       </div>
       <div class="testi-card reveal">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">ভাইয়াদের এনালাইসিস খুব হেল্পফুল ছিল এছাড়া প্রতিশোধ কেনার পর প্রতিটি ভার্সিটি মিনি কোর্স ফ্রি দেয়ার কারণে আবার রিভিশন দেওয়ার সুযোগ পেয়েছি ধন্যবাদ ভার্সিটি স্টেশন কে। </p>
+        <p class="testi-quote">ভাইয়াদের এনালাইসিস খুব হেল্পফুল ছিল এছাড়া প্রতিশোধ কেনার পর প্রতিটি ভার্সিটি মিনি কোর্স ফ্রি দেয়ার কারণে আবার রিভিশন দেওয়ার সুযোগ পেয়েছি।</p>
         <div class="testi-author">
           <div class="testi-avatar">SN</div>
-          <div><div class="testi-name">সুমাইয়া নাজনীন</div><div class="testi-batch">HSC 2024 · রাজশাহী বিশ্ববিদ্যালয় </div></div>
+          <div><div class="testi-name">সুমাইয়া নাজনীন</div><div class="testi-batch">HSC 2024 · রাজশাহী বিশ্ববিদ্যালয়</div></div>
         </div>
       </div>
     </div>
@@ -1264,7 +1078,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">ক্লাসগুলো কোথায় পাবো?<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg></div>
-        <div class="faq-answer">সমস্ত ক্লাস, এক্সাম এবং মেন্টরিং সাপোর্ট আমাদের ডেডিকেটেড প্ল্যাটফর্ম, ফেসবুক ,এবং টেলিগ্রাম চ্যানেলের মাধ্যমে পাওয়া যাবে।</div>
+        <div class="faq-answer">সমস্ত ক্লাস, এক্সাম এবং মেন্টরিং সাপোর্ট আমাদের ডেডিকেটেড প্ল্যাটফর্ম, ফেসবুক, এবং টেলিগ্রাম চ্যানেলের মাধ্যমে পাওয়া যাবে।</div>
       </div>
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">প্রতিশোধ ১.০ এর ব্যাচের স্টুডেন্টরা কি আবার ভর্তি হতে পারবে?<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg></div>
@@ -1354,25 +1168,44 @@ window.addEventListener('load', () => {
   setTimeout(() => { document.getElementById('loader').classList.add('done'); }, 1800);
 });
 
-// ── COUNTDOWN ──
+// ── COUNTDOWN (shared target) ──
 const TARGET_DATE = new Date('2026-04-16T22:00:00+06:00');
 function pad(n) { return String(n).padStart(2, '0'); }
+
 function updateCountdown() {
   const diff = TARGET_DATE - Date.now();
-  if (diff <= 0) {
-    document.getElementById('cd-days').textContent  = '00';
-    document.getElementById('cd-hours').textContent = '00';
-    document.getElementById('cd-mins').textContent  = '00';
-    document.getElementById('cd-secs').textContent  = '00';
-    return;
-  }
-  document.getElementById('cd-days').textContent  = pad(Math.floor(diff / 86400000));
-  document.getElementById('cd-hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
-  document.getElementById('cd-mins').textContent  = pad(Math.floor((diff % 3600000) / 60000));
-  document.getElementById('cd-secs').textContent  = pad(Math.floor((diff % 60000) / 1000));
+  const days  = diff > 0 ? Math.floor(diff / 86400000) : 0;
+  const hours = diff > 0 ? Math.floor((diff % 86400000) / 3600000) : 0;
+  const mins  = diff > 0 ? Math.floor((diff % 3600000) / 60000) : 0;
+  const secs  = diff > 0 ? Math.floor((diff % 60000) / 1000) : 0;
+  // Hero inline countdown
+  document.getElementById('hcd-days').textContent  = pad(days);
+  document.getElementById('hcd-hours').textContent = pad(hours);
+  document.getElementById('hcd-mins').textContent  = pad(mins);
+  document.getElementById('hcd-secs').textContent  = pad(secs);
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
+
+// ── PRE-BOOKING COUNTER (animated increment) ──
+(function() {
+  const BASE = 247;
+  // Animate on load
+  let current = 0;
+  const target = BASE;
+  const el = document.getElementById('prebookCount');
+  const step = Math.ceil(target / 60);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(timer);
+  }, 24);
+  // Increment by 1 every ~4-8 min (simulate live bookings)
+  setInterval(() => {
+    const cur = parseInt(el.textContent, 10);
+    el.textContent = cur + 1;
+  }, Math.random() * 240000 + 180000);
+})();
 
 // ── MODAL ──
 function openModal()  { document.getElementById('modalOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
@@ -1404,12 +1237,10 @@ function submitForm() {
   const coupon  = document.getElementById('f-coupon').value.trim();
 
   if (!name || !phone || !college || !batch || !gender) {
-    alert('অনুগ্রহ করে সকল বাধ্যতামূলক তথ্য পূরণ করো।');
-    return;
+    alert('অনুগ্রহ করে সকল বাধ্যতামূলক তথ্য পূরণ করো।'); return;
   }
   if (!/^01[3-9]\d{8}$/.test(phone)) {
-    alert('সঠিক ফোন নম্বর দাও।');
-    return;
+    alert('সঠিক ফোন নম্বর দাও।'); return;
   }
 
   const btn = document.getElementById('submitBtn');
@@ -1425,6 +1256,10 @@ function submitForm() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ timestamp, name, phone, college, batch, gender, coupon: coupon || 'N/A', uid })
   }).catch(() => {}).finally(() => {
+    // Bump the counter on successful submission
+    const cEl = document.getElementById('prebookCount');
+    cEl.textContent = parseInt(cEl.textContent, 10) + 1;
+
     document.getElementById('formView').style.display = 'none';
     const tv = document.getElementById('ticketView');
     tv.style.display = 'block';
