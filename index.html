@@ -142,7 +142,6 @@
   .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff4040; animation: blink 1.5s ease infinite; flex-shrink: 0; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  /* ── FIXED HERO TITLE: fully visible, no clip ── */
   .hero-title {
     font-size: clamp(2rem, 6vw, 4.2rem);
     font-weight: 700;
@@ -153,7 +152,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 6px;
-    padding-bottom: 4px; /* ensures descenders are not clipped */
+    padding-bottom: 4px;
     animation: fadeup 0.8s ease both;
     overflow: visible;
   }
@@ -209,6 +208,7 @@
   @keyframes float1 { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-20px)} }
   @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(16px)} }
 
+  /* ── DASHBOARD CARD ── */
   .dashboard-card {
     background: rgba(20,20,20,0.85);
     border: 1px solid rgba(120,0,0,0.3);
@@ -218,13 +218,38 @@
     box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(120,0,0,0.1);
     position: relative; z-index: 2;
   }
-  .dash-header { font-size: 0.72rem; font-weight: 600; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
-  .dash-stat { margin-bottom: 16px; }
-  .dash-stat-label { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px; }
-  .dash-stat-value { font-size: 1.5rem; font-weight: 700; color: var(--text); }
-  .dash-stat-sub { font-size: 0.72rem; color: #4caf50; }
-  .dash-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 4px; margin-bottom: 12px; overflow: hidden; }
-  .dash-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--primary), var(--gold)); }
+  .dash-header { font-size: 0.72rem; font-weight: 600; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+  /* ── NEW STAT GRID ── */
+  .dash-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .dash-stat-box {
+    background: rgba(120,0,0,0.1);
+    border: 1px solid rgba(120,0,0,0.2);
+    border-radius: 11px;
+    padding: 11px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .dsb-num {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .dsb-lbl {
+    font-size: 0.66rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+  .dsb-accent { color: var(--gold); }
+
   .dash-subjects { display: flex; gap: 5px; flex-wrap: wrap; }
   .subj-tag { font-size: 0.68rem; padding: 3px 9px; background: rgba(120,0,0,0.2); border: 1px solid rgba(120,0,0,0.3); border-radius: 100px; color: #ff9090; }
 
@@ -447,30 +472,23 @@
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* ═══════════════════════════════════
-     COURSE POSTER BANNER (replaces teacher panel banner)
+     POSTER IMAGE BANNER
+     Replace src="YOUR_POSTER_IMAGE_URL"
+     with your actual imgur or image link.
   ═══════════════════════════════════ */
-  .course-poster-banner {
+  .poster-image-banner {
     width: 100%;
     border-radius: 16px;
     border: 1px solid rgba(120,0,0,0.35);
     overflow: hidden;
     position: relative;
-    margin-bottom: 26px;
+    margin-bottom: 0;
     box-shadow: 0 0 40px var(--primary-glow), 0 8px 32px rgba(0,0,0,0.5);
-    background: linear-gradient(120deg,
-      #0d0000 0%,
-      #1a0000 20%,
-      #2a0000 40%,
-      #1a0000 60%,
-      #0d0000 100%
-    );
-    aspect-ratio: 16/5;
-    display: flex;
-    align-items: stretch;
+    background: #0d0000;
+    /* aspect-ratio auto so image defines height */
   }
 
-  /* Top accent line */
-  .course-poster-banner::before {
+  .poster-image-banner::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; height: 2px;
@@ -485,9 +503,7 @@
     );
     z-index: 5;
   }
-
-  /* Bottom accent line */
-  .course-poster-banner::after {
+  .poster-image-banner::after {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0; height: 1px;
@@ -495,234 +511,95 @@
     z-index: 5;
   }
 
-  /* Background grid texture */
-  .poster-grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    z-index: 1;
-  }
-
-  /* Red radial glow on left */
-  .poster-glow-left {
-    position: absolute;
-    top: 50%; left: 18%;
-    transform: translate(-50%, -50%);
-    width: 55%;
-    height: 200%;
-    background: radial-gradient(ellipse, rgba(120,0,0,0.35) 0%, transparent 65%);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  /* Gold radial glow, subtle, on right */
-  .poster-glow-right {
-    position: absolute;
-    top: 50%; right: -5%;
-    transform: translateY(-50%);
-    width: 40%;
-    height: 200%;
-    background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 65%);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  /* Diagonal slash decoration */
-  .poster-slash {
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 50%;
-    width: 1px;
-    background: linear-gradient(180deg, transparent, rgba(120,0,0,0.4) 30%, rgba(120,0,0,0.4) 70%, transparent);
-    z-index: 3;
-    transform: rotate(12deg) scaleY(1.5);
-    pointer-events: none;
-  }
-
-  /* Left content area */
-  .poster-left {
-    flex: 1.15;
-    padding: clamp(14px, 3vw, 28px) clamp(16px, 3.5vw, 32px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    z-index: 4;
-  }
-
-  .poster-eyebrow {
-    font-size: clamp(0.55rem, 1.3vw, 0.65rem);
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--primary-light);
-    margin-bottom: clamp(4px, 1vw, 8px);
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .poster-eyebrow-line {
+  .poster-image-banner img {
+    width: 100%;
+    height: auto;
     display: block;
-    width: 20px;
-    height: 1px;
-    background: var(--primary-light);
-    flex-shrink: 0;
+    object-fit: cover;
+    /* If your image is very tall, cap it: */
+    max-height: 420px;
+    object-position: center top;
   }
 
-  .poster-main-title {
-    font-size: clamp(1.1rem, 3.5vw, 2.4rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    background: linear-gradient(130deg, #ffffff 0%, #f0ece8 40%, var(--gold) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: clamp(2px, 0.5vw, 6px);
-    padding-bottom: 2px;
-  }
-
-  .poster-version-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: rgba(120,0,0,0.25);
-    border: 1px solid rgba(120,0,0,0.45);
-    border-radius: 6px;
-    padding: 3px 10px;
-    font-size: clamp(0.55rem, 1.2vw, 0.68rem);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: #ff9090;
-    text-transform: uppercase;
-    margin-bottom: clamp(6px, 1.5vw, 12px);
-    width: fit-content;
-  }
-
-  .poster-tagline {
-    font-size: clamp(0.65rem, 1.5vw, 0.82rem);
-    color: var(--text-muted);
-    line-height: 1.6;
-    max-width: 300px;
-    margin-bottom: clamp(8px, 1.8vw, 14px);
-  }
-
-  .poster-stat-row {
-    display: flex;
-    gap: clamp(10px, 2.5vw, 22px);
-    flex-wrap: wrap;
-    align-items: flex-end;
-  }
-
-  .poster-stat {
+  /* Placeholder shown when no image is set */
+  .poster-image-placeholder {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 140px;
+    padding: 28px 20px;
+    background: linear-gradient(120deg, #0d0000, #1a0000, #0d0000);
+    text-align: center;
+  }
+  .poster-image-placeholder p {
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .poster-image-placeholder strong {
+    color: var(--primary-light);
+    font-weight: 600;
   }
 
-  .poster-stat-num {
-    font-size: clamp(0.9rem, 2.2vw, 1.3rem);
+  /* ── COURSE OVERVIEW BAR (below poster) ── */
+  .course-overview-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: rgba(12,0,0,0.9);
+    border: 1px solid rgba(120,0,0,0.3);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+    margin-bottom: 26px;
+  }
+
+  .cob-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 2.5vw, 18px) clamp(10px, 2vw, 16px);
+    gap: 3px;
+    border-right: 1px solid rgba(120,0,0,0.2);
+    position: relative;
+    transition: background 0.25s;
+  }
+  .cob-item:last-child { border-right: none; }
+  .cob-item:hover { background: rgba(120,0,0,0.1); }
+
+  .cob-num {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
     font-weight: 700;
     color: var(--gold);
     line-height: 1;
+    letter-spacing: -0.01em;
   }
-
-  .poster-stat-lbl {
-    font-size: clamp(0.48rem, 1.1vw, 0.58rem);
-    color: var(--text-dim);
+  .cob-lbl {
+    font-size: clamp(0.58rem, 1.3vw, 0.68rem);
+    font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-  }
-
-  .poster-stat-divider {
-    width: 1px;
-    height: clamp(22px, 4vw, 34px);
-    background: rgba(120,0,0,0.3);
-    align-self: center;
-  }
-
-  /* Right content area */
-  .poster-right {
-    flex: 0.85;
-    position: relative;
-    z-index: 4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  /* Vertical separator */
-  .poster-separator {
-    position: absolute;
-    left: 0;
-    top: 12%;
-    bottom: 12%;
-    width: 1px;
-    background: linear-gradient(180deg, transparent, rgba(120,0,0,0.4), transparent);
-  }
-
-  .poster-right-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(6px, 1.5vw, 12px);
-    padding: clamp(10px, 2vw, 20px);
+    color: var(--text-muted);
     text-align: center;
-    width: 100%;
+    line-height: 1.3;
   }
 
-  /* Subject pill grid */
-  .poster-subject-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(4px, 0.8vw, 7px);
-    width: 100%;
-    max-width: 240px;
-  }
-
-  .poster-subj-pill {
-    background: rgba(120,0,0,0.18);
-    border: 1px solid rgba(120,0,0,0.3);
-    border-radius: 6px;
-    padding: clamp(3px, 0.7vw, 6px) clamp(4px, 0.8vw, 8px);
-    font-size: clamp(0.5rem, 1.1vw, 0.65rem);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: #ff9090;
-    text-align: center;
-    text-transform: uppercase;
-    transition: all 0.25s;
-  }
-
-  .poster-subj-pill:hover {
-    background: rgba(120,0,0,0.35);
-    border-color: rgba(120,0,0,0.5);
-    color: #ffb0b0;
-  }
-
-  .poster-right-label {
-    font-size: clamp(0.52rem, 1.1vw, 0.62rem);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-top: clamp(2px, 0.5vw, 5px);
-  }
-
-  /* Responsive: hide right side on small screens */
-  @media (max-width: 580px) {
-    .course-poster-banner {
-      aspect-ratio: auto;
-      min-height: 140px;
+  @media (max-width: 480px) {
+    .course-overview-bar {
+      grid-template-columns: repeat(2, 1fr);
     }
-    .poster-right { display: none; }
-    .poster-left { padding: 18px 18px 20px; }
-    .poster-tagline { display: none; }
+    .cob-item:nth-child(2) { border-right: none; }
+    .cob-item:nth-child(3) {
+      border-right: 1px solid rgba(120,0,0,0.2);
+      border-top: 1px solid rgba(120,0,0,0.2);
+    }
+    .cob-item:nth-child(4) {
+      border-right: none;
+      border-top: 1px solid rgba(120,0,0,0.2);
+    }
   }
 
   /* ═══════════════════════════════════
@@ -952,73 +829,87 @@
       <p class="hero-subtitle">Second Timer Special Course</p>
       <p class="hero-desc">প্রতিশোধ ২.০ আমাদের পূর্ববর্তী সফল কোর্স "প্রতিশোধ ১.০"-এর একটি উন্নত ও পরিমার্জিত সংস্করণ। এই কোর্সটি বিশেষভাবে প্রস্তুত করা হয়েছে সেকেন্ড টাইমার শিক্ষার্থীদের জন্য, যেখানে আমরা প্রতিটি শিক্ষার্থীর একাডেমিক অগ্রগতি নিশ্চিত করতে সর্বোচ্চ গুরুত্ব প্রদান করি।</p>
 
-      <!-- COURSE POSTER BANNER -->
-      <div class="course-poster-banner reveal">
-        <div class="poster-grid-bg"></div>
-        <div class="poster-glow-left"></div>
-        <div class="poster-glow-right"></div>
-        <div class="poster-slash"></div>
-
-        <div class="poster-left">
-          <div class="poster-eyebrow">
-            <span class="poster-eyebrow-line"></span>
-            Expert Faculty · Teacher Panel
-          </div>
-          <div class="poster-main-title">Our Expert<br>Teacher Panel</div>
-          <div class="poster-version-tag">প্রতিশোধ ২.০</div>
-          <p class="poster-tagline">বাংলাদেশের সেরা শিক্ষকদের সরাসরি গাইডেন্সে তোমার স্বপ্নের বিশ্ববিদ্যালয়ে ভর্তির পথ তৈরি করো।</p>
-          <div class="poster-stat-row">
-            <div class="poster-stat">
-              <span class="poster-stat-num">10+</span>
-              <span class="poster-stat-lbl">Expert Teachers</span>
-            </div>
-            <div class="poster-stat-divider"></div>
-            <div class="poster-stat">
-              <span class="poster-stat-num">6</span>
-              <span class="poster-stat-lbl">Subjects</span>
-            </div>
-            <div class="poster-stat-divider"></div>
-            <div class="poster-stat">
-              <span class="poster-stat-num">24/7</span>
-              <span class="poster-stat-lbl">Support</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="poster-right">
-          <div class="poster-separator"></div>
-          <div class="poster-right-content">
-            <div class="poster-subject-grid">
-              <div class="poster-subj-pill">Physics</div>
-              <div class="poster-subj-pill">Chemistry</div>
-              <div class="poster-subj-pill">Math</div>
-              <div class="poster-subj-pill">Biology</div>
-              <div class="poster-subj-pill">English</div>
-              <div class="poster-subj-pill">বাংলা</div>
-            </div>
-            <div class="poster-right-label">Subjects Covered</div>
-          </div>
+      <!--
+        ════════════════════════════════════════
+        POSTER IMAGE BANNER
+        ────────────────────────────────────────
+        To set your poster image:
+          1. Change the src attribute below
+             from "YOUR_POSTER_IMAGE_URL"
+             to your actual imgur or any image link
+             e.g. src="https://i.imgur.com/XXXXXXX.jpg"
+          2. Save the file — the image will fill the banner.
+        ════════════════════════════════════════
+      -->
+      <div class="poster-image-banner reveal" id="posterBanner">
+        <img
+          id="posterImg"
+          src="YOUR_POSTER_IMAGE_URL"
+          alt="প্রতিশোধ ২.০ Teacher Panel Poster"
+          onerror="this.style.display='none'; document.getElementById('posterPlaceholder').style.display='flex';"
+          onload="document.getElementById('posterPlaceholder').style.display='none'; this.style.display='block';"
+        >
+        <div class="poster-image-placeholder" id="posterPlaceholder">
+          <p>
+            <strong>পোস্টার ইমেজ এখানে দেখাবে</strong><br>
+            HTML-এর <code style="color:var(--gold);font-size:0.78rem;">#posterImg</code> এর <code style="color:var(--gold);font-size:0.78rem;">src="..."</code> এ<br>
+            তোমার imgur বা image লিংক বসাও
+          </p>
         </div>
       </div>
-      <!-- END COURSE POSTER BANNER -->
+
+      <!-- COURSE OVERVIEW BAR (below poster) -->
+      <div class="course-overview-bar reveal">
+        <div class="cob-item">
+          <span class="cob-num">150+</span>
+          <span class="cob-lbl">Live Classes</span>
+        </div>
+        <div class="cob-item">
+          <span class="cob-num">∞</span>
+          <span class="cob-lbl">Archive Exams</span>
+        </div>
+        <div class="cob-item">
+          <span class="cob-num">10+</span>
+          <span class="cob-lbl">Expert Teachers</span>
+        </div>
+        <div class="cob-item">
+          <span class="cob-num">24/7</span>
+          <span class="cob-lbl">Mentorship</span>
+        </div>
+      </div>
+      <!-- END POSTER + OVERVIEW -->
 
       <div class="hero-actions">
         <button class="btn-primary" onclick="openModal()">Pre-Book Now</button>
         <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">কোর্সের বিবরণ দেখো</button>
       </div>
     </div>
+
+    <!-- HERO VISUAL (right side) -->
     <div class="hero-visual">
       <div class="blob blob-1"></div>
       <div class="blob blob-2"></div>
       <div class="dashboard-card">
         <div class="dash-header">Course Overview</div>
-        <div class="dash-stat">
-          <div class="dash-stat-label">Success Rate</div>
-          <div class="dash-stat-value">94.7%</div>
-          <div class="dash-stat-sub">↑ from প্রতিশোধ ১.০</div>
+        <div class="dash-stats-grid">
+          <div class="dash-stat-box">
+            <span class="dsb-num dsb-accent">150+</span>
+            <span class="dsb-lbl">Live Classes</span>
+          </div>
+          <div class="dash-stat-box">
+            <span class="dsb-num dsb-accent">∞</span>
+            <span class="dsb-lbl">Archive Exams</span>
+          </div>
+          <div class="dash-stat-box">
+            <span class="dsb-num dsb-accent">10+</span>
+            <span class="dsb-lbl">Expert Teachers</span>
+          </div>
+          <div class="dash-stat-box">
+            <span class="dsb-num dsb-accent">24/7</span>
+            <span class="dsb-lbl">Mentorship</span>
+          </div>
         </div>
-        <div class="dash-bar"><div class="dash-bar-fill" style="width:94.7%"></div></div>
-        <div class="dash-stat-label" style="margin-bottom:8px">Subjects Covered</div>
+        <div class="dash-stat-label" style="margin-bottom:8px; font-size:0.75rem; color:var(--text-muted);">Subjects Covered</div>
         <div class="dash-subjects">
           <span class="subj-tag">Physics</span>
           <span class="subj-tag">Chemistry</span>
@@ -1050,125 +941,168 @@
     </div>
     <div class="teachers-grid">
 
-     <!-- Teacher 1 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_1" alt="Teacher 1">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Dr Naimul Islam Rahat</div>
-    <div class="teacher-desig">MBBS,DMC</div>
-    <span class="teacher-subj-tag">Biology,Chemistry,Math</span>
-  </div>
-</div>
+      <!-- Teacher 1 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_1" alt="Teacher 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">NR</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Dr Naimul Islam Rahat</div>
+          <div class="teacher-desig">MBBS, DMC</div>
+          <span class="teacher-subj-tag">Biology · Chemistry · Math</span>
+        </div>
+      </div>
 
-<!-- Teacher 2 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_2" alt="Teacher 2">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Tasdid Islam Turab</div>
-    <div class="teacher-desig">DMC</div>
-    <span class="teacher-subj-tag">Physics,Chemistry,Biology</span>
-  </div>
-</div>
+      <!-- Teacher 2 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_2" alt="Teacher 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">TT</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Tasdid Islam Turab</div>
+          <div class="teacher-desig">DMC</div>
+          <span class="teacher-subj-tag">Physics · Chemistry · Biology</span>
+        </div>
+      </div>
 
-<!-- Teacher 3 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_3" alt="Teacher 3">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Senior Faculty</div>
-    <span class="teacher-subj-tag">Math</span>
-  </div>
-</div>
+      <!-- Teacher 3 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_3" alt="Teacher 3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T3</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">Math</span>
+        </div>
+      </div>
 
-<!-- Teacher 4 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_4" alt="Teacher 4">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Senior Faculty</div>
-    <span class="teacher-subj-tag">Biology</span>
-  </div>
-</div>
+      <!-- Teacher 4 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_4" alt="Teacher 4" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T4</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">Biology</span>
+        </div>
+      </div>
 
-<!-- Teacher 5 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_5" alt="Teacher 5">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Senior Faculty</div>
-    <span class="teacher-subj-tag">English</span>
-  </div>
-</div>
+      <!-- Teacher 5 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_5" alt="Teacher 5" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T5</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">English</span>
+        </div>
+      </div>
 
-<!-- Teacher 6 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_6" alt="Teacher 6">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Senior Faculty</div>
-    <span class="teacher-subj-tag">বাংলা</span>
-  </div>
-</div>
+      <!-- Teacher 6 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_6" alt="Teacher 6" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T6</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Senior Faculty</div>
+          <span class="teacher-subj-tag">বাংলা</span>
+        </div>
+      </div>
 
-<!-- Teacher 7 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_7" alt="Teacher 7">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Specialist</div>
-    <span class="teacher-subj-tag">Physics</span>
-  </div>
-</div>
+      <!-- Teacher 7 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_7" alt="Teacher 7" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T7</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Physics</span>
+        </div>
+      </div>
 
-<!-- Teacher 8 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_8" alt="Teacher 8">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Specialist</div>
-    <span class="teacher-subj-tag">Chemistry</span>
-  </div>
-</div>
+      <!-- Teacher 8 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_8" alt="Teacher 8" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T8</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Chemistry</span>
+        </div>
+      </div>
 
-<!-- Teacher 9 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_9" alt="Teacher 9">
-  </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Specialist</div>
-    <span class="teacher-subj-tag">Math</span>
-  </div>
-</div>
+      <!-- Teacher 9 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_9" alt="Teacher 9" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T9</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Math</span>
+        </div>
+      </div>
 
-<!-- Teacher 10 -->
-<div class="teacher-card reveal">
-  <div class="teacher-img-wrap">
-    <img src="YOUR_IMAGE_10" alt="Teacher 10">
+      <!-- Teacher 10 -->
+      <div class="teacher-card reveal">
+        <div class="teacher-img-wrap">
+          <img src="YOUR_IMAGE_10" alt="Teacher 10" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="display:block;">
+          <div class="teacher-img-placeholder" style="display:none;">
+            <div class="teacher-img-placeholder-icon">T10</div>
+            <div class="teacher-img-label">Photo</div>
+          </div>
+        </div>
+        <div class="teacher-info">
+          <div class="teacher-name">Teacher Name</div>
+          <div class="teacher-desig">Specialist</div>
+          <span class="teacher-subj-tag">Biology</span>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <div class="teacher-info">
-    <div class="teacher-name">Teacher Name</div>
-    <div class="teacher-desig">Specialist</div>
-    <span class="teacher-subj-tag">Biology</span>
-  </div>
-</div>
 </section>
 
 <div class="divider"></div>
